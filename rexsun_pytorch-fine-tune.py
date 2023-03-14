@@ -233,8 +233,6 @@ def test(model,device,test_loader):
         100. * correct / len(valid_dataset)))
 for epoch in range(1,9):
 
-    %time train(model_ft,DEVICE,image_dataloader["train"],epoch)
-
     test(model_ft,DEVICE,image_dataloader["valid"])
 # hook
 

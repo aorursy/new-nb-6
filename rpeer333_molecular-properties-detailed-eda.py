@@ -1,6 +1,3 @@
-
-
-
 import os
 
 from os.path import join
@@ -34,9 +31,6 @@ try:
     import ase
 
 except:
-
-    !pip install ase
-
     import ase
 
 from ase import Atoms
@@ -73,7 +67,7 @@ atom_count = structures.groupby('atom').size()
 
 plt.bar(atom_count.index, atom_count.values)
 
-plt.title('atom count');
+plt.title('atom count')
 def view_molecule(structures=structures, name=None):
 
     """
@@ -118,7 +112,7 @@ print(f'maximum number of atoms per molecule: {atom_counts.max()}')
 
 atom_counts.hist(bins=atom_counts.max())
 
-plt.title('number of atoms per molecule');
+plt.title('number of atoms per molecule')
 
 train_structures = structures[structures.molecule_name.isin(set(train.molecule_name))]
 
@@ -140,7 +134,7 @@ print(f'number of test-structures: {len(test_structures.molecule_name.unique())}
 
 test_structures.groupby('molecule_name').size().hist()
 
-plt.title('test: number of atoms per molecule');
+plt.title('test: number of atoms per molecule')
 train_j_counts = train.groupby('molecule_name').size()
 
 print(f'min and max number of j-couplings: {min(train_j_counts.values)}, {max(train_j_counts.values)}')
@@ -155,7 +149,7 @@ plt.show()
 
 test.groupby('molecule_name').size().hist()
 
-plt.title('test-set: number of labelled interactions per molecule');
+plt.title('test-set: number of labelled interactions per molecule')
 for sc_type, type_df in train.groupby('type'):
 
     counts = type_df.groupby('molecule_name').size()
@@ -194,7 +188,7 @@ plt.ylabel('fraction of interactions')
 
 plt.xlabel('scalar coupling type')
 
-plt.title('test: number of interactions per type');
+plt.title('test: number of interactions per type')
 def add_sc_type_features(df):
 
     df['bonds']    = df.type.map(lambda x: int(x[0]))
@@ -267,22 +261,22 @@ plt.title('test: bonds sc atom-pairs')
 plt.show()
 sns.boxplot(data=train, x='type', y='scalar_coupling_constant', fliersize=0.5)
 
-plt.show();
+plt.show()
 
 
 
 sns.boxplot(data=train, x='bonds', y='scalar_coupling_constant', fliersize=0.5)
 
-plt.show();
+plt.show()
 
 
 
 sns.boxplot(data=train, x='atom_pair', y='scalar_coupling_constant', fliersize=0.5)
 
-plt.show();
+plt.show()
 train.scalar_coupling_constant.hist()
 
-plt.title('(training) target-variable distribution');
+plt.title('(training) target-variable distribution')
 dipole = pd.read_csv(join(DATA_DIR, 'dipole_moments.csv'))
 
 assert not set(dipole.molecule_name).intersection(test.molecule_name)
@@ -293,7 +287,7 @@ display(dipole.head())
 
 plt.hist(dipole[['X', 'Y', 'Z']].values.ravel())
 
-plt.title('diple moments distribution');
+plt.title('diple moments distribution')
 pot_energy = pd.read_csv(join(DATA_DIR, 'potential_energy.csv'))
 
 assert not set(pot_energy.molecule_name).intersection(test.molecule_name)
@@ -304,7 +298,7 @@ display(pot_energy.head())
 
 pot_energy.potential_energy.hist()
 
-plt.title('potential energy distribution');
+plt.title('potential energy distribution')
 mag_shield = pd.read_csv(join(DATA_DIR, 'magnetic_shielding_tensors.csv'))
 
 assert not set(mag_shield.molecule_name).intersection(test.molecule_name)
@@ -315,7 +309,7 @@ display(mag_shield.head())
 
 plt.hist(mag_shield.drop(['molecule_name', 'atom_index'], axis=1).values.ravel())
 
-plt.title('magnetic shield distribution');
+plt.title('magnetic shield distribution')
 mulliken = pd.read_csv(join(DATA_DIR, 'mulliken_charges.csv'))
 
 assert not set(mulliken.molecule_name).intersection(test.molecule_name)
@@ -326,7 +320,7 @@ display(mulliken.head())
 
 mulliken.mulliken_charge.hist()
 
-plt.title('mulliken charge distribution');
+plt.title('mulliken charge distribution')
 sc_contributions = pd.read_csv(join(DATA_DIR, 'scalar_coupling_contributions.csv'))
 
 assert not set(sc_contributions.molecule_name).intersection(test.molecule_name)
@@ -427,7 +421,7 @@ plt.title('train: distances of target sc-interactions')
 
 plt.xlabel('distance [Å]')
 
-plt.ylabel('number of interactions (atom-pairs)');
+plt.ylabel('number of interactions (atom-pairs)')
 
 plt.show()
 
@@ -456,7 +450,7 @@ for n_bonds, df in train.groupby('bonds'):
 
     plt.xlabel('distance [Å]')
 
-    plt.ylabel('number of interactions (atom-pairs)');
+    plt.ylabel('number of interactions (atom-pairs)')
 
     plt.show()
 
@@ -472,7 +466,7 @@ for n_bonds, df in test.groupby('bonds'):
 
     plt.xlabel('distance [Å]')
 
-    plt.ylabel('number of interactions (atom-pairs)');
+    plt.ylabel('number of interactions (atom-pairs)')
 
     plt.show()
 def get_dist_matrix(df_structures_idx, molecule, bug_fixed=True):

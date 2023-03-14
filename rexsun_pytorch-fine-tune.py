@@ -33,7 +33,7 @@ breed2idx=dict((breed,idx) for idx,breed in enumerate(breeds))
 
 idx2breed=dict((idx,breed) for idx,breed in enumerate(breeds))
 
-print(len(breeds))   # 这个数据有120个类别
+print(len(breeds)) 
 all_labels_df["label_idx"]=[breed2idx[b] for b in all_labels_df.breed]
 
 all_labels_df.head()
@@ -51,15 +51,11 @@ class DogDataset(Dataset):
 
     def __len__(self):
 
-        """放回数据集的长度"""
-
         return self.label_df.shape[0]
 
     
 
     def __getitem__(self,idx):
-
-        """读取图片和标签"""
 
         label=self.label_df.label_idx[idx]
 
@@ -78,9 +74,9 @@ class DogDataset(Dataset):
             
 
         return img,label
-IMG_SIZE=224   # resnet50的输入是224的，所以需要将图片统一大小
+IMG_SIZE=224  
 
-BATCH_SIZE=256   # 每个批次输入的图片的数量
+BATCH_SIZE=256 
 
 IMG_MEAN=[0.485,0.456,0.406]
 
@@ -91,17 +87,17 @@ CUDA=torch.cuda.is_available()
 DEVICE=torch.device("cuda" if CUDA else "cpu")
 train_transform=transforms.Compose([
 
-    transforms.Resize(IMG_SIZE),   # 改变图片大小
+    transforms.Resize(IMG_SIZE), 
 
-    transforms.RandomResizedCrop(IMG_SIZE),  # 首先随机裁减，然后在转换成规定图片大小
+    transforms.RandomResizedCrop(IMG_SIZE), 
 
-    transforms.RandomHorizontalFlip(),  # 以0.5的概率随机水平翻转
+    transforms.RandomHorizontalFlip(),  
 
-    transforms.RandomRotation(30),  # 旋转
+    transforms.RandomRotation(30),
 
-    transforms.ToTensor(),  # 转换成张量
+    transforms.ToTensor(), 
 
-    transforms.Normalize(IMG_MEAN,IMG_STD)  # 标准化
+    transforms.Normalize(IMG_MEAN,IMG_STD) 
 
 ])
 
@@ -118,7 +114,6 @@ val_transform=transforms.Compose([
     transforms.Normalize(IMG_MEAN,IMG_STD)
 
 ])
-# 使用分层抽样切分训练集和验证集
 
 dataset_name=["train","valid"]
 
@@ -148,9 +143,8 @@ image_dataset={"train":train_dataset,"valid":valid_dataset}
 image_dataloader={x:DataLoader(image_dataset[x],batch_size=BATCH_SIZE,shuffle=True,num_workers=0) for x in dataset_name}
 
 datasize={x:len(image_dataset[x]) for x in dataset_name}
-model_ft=models.resnet50(pretrained=True) # 自动下载官方的预训练模型
+model_ft=models.resnet50(pretrained=True)
 
-# 将所有的层都先冻结
 
 for param in model_ft.parameters():
 
@@ -158,20 +152,18 @@ for param in model_ft.parameters():
 
 
 
-# 打印全连接层的信息
-
 print(model_ft.fc)
 
-num_fc_ftr=model_ft.fc.in_features  # 获取全连接层的输入
+num_fc_ftr=model_ft.fc.in_features
 
-model_ft.fc=nn.Linear(num_fc_ftr,len(breeds))  # 定义一个新的全连接层
+model_ft.fc=nn.Linear(num_fc_ftr,len(breeds))  
 
-model_ft=model_ft.to(DEVICE)  # 将网络放到设备中
+model_ft=model_ft.to(DEVICE)
 
-print(model_ft)  # 最后打印一下模型
+print(model_ft)
 criterion=nn.CrossEntropyLoss()
 
-optimizer=torch.optim.Adam([{"params":model_ft.fc.parameters()}],lr=0.001)  # 指定新加的fc层的学习率
+optimizer=torch.optim.Adam([{"params":model_ft.fc.parameters()}],lr=0.001)
 for data in image_dataloader["train"].dataset:
 
     x,y=data
@@ -246,7 +238,7 @@ for epoch in range(1,9):
     test(model_ft,DEVICE,image_dataloader["valid"])
 # hook
 
-in_list=[]  # 存放所有的输出
+in_list=[] 
 
 def hook(module,input,output):
 

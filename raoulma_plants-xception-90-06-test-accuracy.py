@@ -22,21 +22,21 @@ plt.rcParams['figure.figsize'] = [16, 10]
 plt.rcParams['font.size'] = 16
 
 # start timer
-global_start = datetime.datetime.now();
+global_start = datetime.datetime.now()
 
 # validation set size
-valid_set_size_percentage = 10; # default = 10%
+valid_set_size_percentage = 10 # default = 10%
 
 # kaggle
 running_on_kaggle = True # set True when running on kaggle
 
 # train data
-take_only_samples_of_train_data = True; # set False to train on all train data
+take_only_samples_of_train_data = True # set False to train on all train data
 num_samples_of_train_data_per_species = 200 # < 221, ignored if take_only_samples_of_train_data = True
 load_bf_of_train_data = False # set True to load bottleneck features from file
 
 # test data
-take_only_samples_of_test_data = False; # set False to predict on all test data
+take_only_samples_of_test_data = False # set False to predict on all test data
 num_samples_of_test_data = 200 # < 794, ignored if take_only_samples_of_test_data = True
 load_bf_of_test_data = False # set True to load bottleneck features from file
 
@@ -165,7 +165,7 @@ if show_plots:
             if i % num_species == num_species - 1:
                 ax.text(250, 112, sp, verticalalignment='center')
             i += 1
-    plt.show();
+    plt.show()
 ## show some test images 
 
 if show_plots:
@@ -181,7 +181,7 @@ if show_plots:
             ax.imshow(img.astype(np.uint8))
             ax.axis('off')
             i += 1
-    plt.show();
+    plt.show()
     
 
 ## take a fixed number of samples for testing purpose
@@ -327,13 +327,10 @@ if running_on_kaggle:
         os.makedirs(models_dir)
 
     # show available pretrained keras models
-    !ls ../input/keras-pretrained-models/
 
     # copy xception models to models directory
     print('')
     print('use xception models')
-    !cp ../input/keras-pretrained-models/xception* ~/.keras/models/
-    !ls ~/.keras/models
     
 ## compute or load bottleneck features from xception model
 
@@ -505,11 +502,11 @@ def shuffle_train_valid_data():
 
 if valid_set_size_percentage > 0:
     # split into train and validation sets
-    valid_set_size = int(len(x_train_valid_bf) * valid_set_size_percentage/100);
-    train_set_size = len(x_train_valid_bf) - valid_set_size;
+    valid_set_size = int(len(x_train_valid_bf) * valid_set_size_percentage/100)
+    train_set_size = len(x_train_valid_bf) - valid_set_size
 else:
     # train on all available data
-    valid_set_size = int(len(x_train_valid_bf) * 0.1);
+    valid_set_size = int(len(x_train_valid_bf) * 0.1)
     train_set_size = len(x_train_valid_bf)
 
 # split into train and validation sets including shuffling
@@ -604,14 +601,14 @@ z_pred = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 
 # cost function
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_data, 
-                                                                       logits=z_pred));
+                                                                       logits=z_pred))
 
 # optimisation function
 tf_learn_rate = tf.placeholder(dtype='float', name="tf_learn_rate")
 train_step = tf.train.AdamOptimizer(tf_learn_rate).minimize(cross_entropy)
 
 # evaluation
-y_pred = tf.cast(tf.nn.softmax(z_pred), dtype = tf.float32);
+y_pred = tf.cast(tf.nn.softmax(z_pred), dtype = tf.float32)
 y_pred_class = tf.cast(tf.argmax(y_pred,1), tf.int32)
 y_data_class = tf.cast(tf.argmax(y_data,1), tf.int32)
 accuracy = tf.reduce_mean(tf.cast(tf.equal(y_pred_class, y_data_class), tf.float32))
@@ -622,7 +619,7 @@ n_epoch = 15 # number of epochs
 batch_size = 50 
 keep_prob = 0.33 # dropout regularization with keeping probability
 learn_rate_range = [0.01,0.005,0.0025,0.001,0.001,0.001,0.00075,0.0005,0.00025,0.0001,
-                   0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001];
+                   0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001]
 learn_rate_step = 3 # in terms of epochs
 
 acc_train_DNN = 0
@@ -641,14 +638,14 @@ for j in range(cv_num):
 
     # shuffle train/validation splits
     shuffle_train_valid_data() 
-    n_step = -1;
+    n_step = -1
 
     # training model
     for i in range(int(n_epoch*train_set_size/batch_size)):
 
         if i%int(learn_rate_step*train_set_size/batch_size) == 0:
-            n_step += 1;
-            learn_rate = learn_rate_range[n_step];
+            n_step += 1
+            learn_rate = learn_rate_range[n_step]
             print('learnrate = ', learn_rate)
         
         x_batch, y_batch = get_next_batch(batch_size)
@@ -728,7 +725,7 @@ if show_plots:
     plt.title('Confusion matrix of validation set')
     plt.ylabel('True species')
     plt.xlabel('Predicted species')
-    plt.show();
+    plt.show()
     
 ## choose prediction
 #y_test_pred_class = y_test_pred_class_DNN

@@ -1,9 +1,5 @@
 def prepare_tf():
 
-    !pip uninstall tensorflow -y
-
-    !pip install tensorflow-gpu==2.0.0-alpha0
-
     from tensorflow.python.ops import control_flow_util
 
     control_flow_util.ENABLE_CONTROL_FLOW_V2 = True

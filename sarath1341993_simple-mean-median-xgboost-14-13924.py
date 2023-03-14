@@ -31,7 +31,6 @@ def cols_new(data_df):
 cols_new(df)
 df.groupby(['item','store'])['sales'].median()
 df.columns
- %%time
 def mean_cols(data,cols):
     for i in cols:
         cols=[e for e in cols if e not in (i)]

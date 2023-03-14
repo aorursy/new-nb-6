@@ -8,14 +8,6 @@
 newdownloads = False
 if newdownloads:
     # install missing packages
-    !pip install matplotlib
-    !pip install scikit-learn
-    !pip install fuzzywuzzy
-    !pip install python-Levenshtein
-    !pip install tqdm
-    !pip install kaggle
-    !pip install "dask[complete]"
-    !pip install graphviz
     
     # download the kaggle data
     import os
@@ -23,7 +15,7 @@ if newdownloads:
     DATA_DIR = '/jet/prs/workspace/data'
     os.makedirs(DATA_DIR)
     os.chdir(DATA_DIR)
-    !kaggle competitions download -c 20-newsgroups-ciphertext-challenge
+
     #unzip
     trainzip = zipfile.ZipFile('train.csv.zip')
     trainzip.extractall(path=DATA_DIR)

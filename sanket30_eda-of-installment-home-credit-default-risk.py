@@ -10,11 +10,6 @@ import seaborn as sns
 plt.style.use('bmh')
 plt.style.use('ggplot')
 plt.rcParams['figure.figsize'] = 20, 10
-
- 'NUM_INSTALMENT_VERSION',
- 'NUM_INSTALMENT_NUMBER',
- 'Days Extra Taken',
- 'AMT_INSTALMENT_difference']
 tempinstall=(installments.groupby(['SK_ID_CURR']).mean()).round()
 tempinstall['SK_ID_CURR']=tempinstall.index.values
 correlation = installment_df.corr()

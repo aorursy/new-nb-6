@@ -47,10 +47,6 @@ try:
 
 except Exception as e:
 
-    !pip install imageio
-
-    !pip install pylab
-
     import pylab
 
     import imageio
@@ -160,8 +156,6 @@ try:
     import face_recognition
 
 except:
-
-    !pip install face_recognition
 
     import face_recognition
 
